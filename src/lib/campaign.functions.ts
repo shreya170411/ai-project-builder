@@ -66,7 +66,7 @@ export const getReferralStatus = createServerFn({ method: "GET" })
       .eq("referral_code", data.code.toUpperCase())
       .maybeSingle();
     if (!row) return null;
-    return { firstName: row.name.split(" ")[0], code: row.referral_code, count: row.referral_count, unlocked: row.reward_unlocked };
+    return { firstName: row.name.split(" ")[0] ?? "", code: row.referral_code, count: row.referral_count, unlocked: row.reward_unlocked };
   });
 
 export const getReferrerName = createServerFn({ method: "GET" })
@@ -74,7 +74,7 @@ export const getReferrerName = createServerFn({ method: "GET" })
   .handler(async ({ data }) => {
     const db = await admin();
     const { data: row } = await db.from("registrations").select("name").eq("referral_code", data.code.toUpperCase()).maybeSingle();
-    return row ? row.name.split(" ")[0] : null;
+    return row ? row.name.split(" ")[0] ?? "" : null;
   });
 
 const EVENTS = ["landing_view", "registration_started", "referral_link_copied", "whatsapp_share_clicked"] as const;

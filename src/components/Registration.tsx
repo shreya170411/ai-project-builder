@@ -26,7 +26,7 @@ export function Registration() {
   useEffect(() => {
     const r = new URLSearchParams(window.location.search).get("ref")?.replace(/[^A-Za-z0-9]/g, "").slice(0, 20) ?? "";
     setRef(r);
-    if (r) fetchReferrer({ data: { code: r } }).then(setReferrer).catch(() => {});
+    if (r) fetchReferrer({ data: { code: r } }).then((n) => setReferrer(n ?? null)).catch(() => {});
     const mine = getMyCode();
     if (mine) refresh(mine);
     // eslint-disable-next-line react-hooks/exhaustive-deps
