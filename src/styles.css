@@ -112,3 +112,13 @@
 @keyframes sweep { from { transform: translateX(-120%); } to { transform: translateX(320%); } }
 @utility animate-rise { animation: rise 600ms var(--ease) both; }
 @utility animate-sweep { animation: sweep 5s var(--ease) infinite; }
+
+html { scroll-behavior: smooth; }
+@keyframes drift { 0%,100% { transform: translate(-50%, 0) scale(1); } 50% { transform: translate(-46%, 20px) scale(1.06); } }
+@keyframes fill { from { width: 0; } }
+@utility animate-drift { animation: drift 14s ease-in-out infinite; }
+@utility animate-fill { animation: fill 1.4s var(--ease) both; }
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity 700ms var(--ease), transform 700ms var(--ease); }
+.reveal.in { opacity: 1; transform: none; }
+@utility lift { transition: transform 250ms var(--ease), border-color 250ms, box-shadow 250ms; &:hover { transform: translateY(-3px); border-color: color-mix(in oklab, var(--primary) 40%, transparent); box-shadow: 0 12px 30px -16px color-mix(in oklab, var(--primary) 50%, transparent); } }
+@media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } html { scroll-behavior: auto; } }
