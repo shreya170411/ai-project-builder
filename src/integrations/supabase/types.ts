@@ -14,13 +14,93 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      events: {
+        Row: {
+          created_at: string
+          id: string
+          meta: Json | null
+          name: string
+          session_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          meta?: Json | null
+          name: string
+          session_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          meta?: Json | null
+          name?: string
+          session_id?: string | null
+        }
+        Relationships: []
+      }
+      registrations: {
+        Row: {
+          college: string
+          created_at: string
+          email: string
+          graduation_year: number
+          id: string
+          name: string
+          phone: string
+          referral_code: string
+          referral_count: number
+          referred_by: string | null
+          reward_unlocked: boolean
+          target_role: string
+        }
+        Insert: {
+          college: string
+          created_at?: string
+          email: string
+          graduation_year: number
+          id?: string
+          name: string
+          phone: string
+          referral_code: string
+          referral_count?: number
+          referred_by?: string | null
+          reward_unlocked?: boolean
+          target_role: string
+        }
+        Update: {
+          college?: string
+          created_at?: string
+          email?: string
+          graduation_year?: number
+          id?: string
+          name?: string
+          phone?: string
+          referral_code?: string
+          referral_count?: number
+          referred_by?: string | null
+          reward_unlocked?: boolean
+          target_role?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      register_student: {
+        Args: {
+          _college: string
+          _email: string
+          _name: string
+          _phone: string
+          _ref: string
+          _role: string
+          _session: string
+          _year: number
+        }
+        Returns: Json
+      }
     }
     Enums: {
       [_ in never]: never
