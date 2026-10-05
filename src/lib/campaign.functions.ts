@@ -107,7 +107,7 @@ export const getAdminStats = createServerFn({ method: "POST" })
     const byRole: Record<string, number> = {};
     for (const x of r) {
       const d = x.created_at.slice(0, 10);
-      if (d in byDay) byDay[d]++;
+      if (d in byDay) byDay[d] = (byDay[d] ?? 0) + 1;
       byRole[x.target_role] = (byRole[x.target_role] ?? 0) + 1;
     }
     const uniq = (n: string) => new Set(e.filter((x) => x.name === n).map((x) => x.session_id || Math.random())).size;

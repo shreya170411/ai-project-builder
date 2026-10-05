@@ -59,8 +59,8 @@ export function Registration() {
     if (!parsed.success) {
       const errs: Record<string, string> = {};
       for (const i of parsed.error.issues) errs[String(i.path[0])] ??= i.message;
-      if (errs.graduation_year) errs.graduation_year = "Select your graduation year";
-      if (errs.target_role) errs.target_role = "Select a target role";
+      if (errs["graduation_year"]) errs["graduation_year"] = "Select your graduation year";
+      if (errs["target_role"]) errs["target_role"] = "Select a target role";
       setErrors(errs);
       return;
     }
@@ -187,7 +187,7 @@ export function Registration() {
           {err("target_role")}
         </div>
       </div>
-      {submitError && !errors.email && <p className="mt-3 text-sm text-destructive">{submitError}</p>}
+      {submitError && !errors["email"] && <p className="mt-3 text-sm text-destructive">{submitError}</p>}
       <button disabled={loading} className="mt-4 w-full rounded-lg bg-primary py-3 font-display text-sm font-semibold text-primary-foreground ring-1 ring-primary/40 transition-colors hover:bg-primary/90 disabled:opacity-60">
         {loading ? "Registering…" : "REGISTER FREE"}
       </button>
