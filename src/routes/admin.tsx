@@ -72,11 +72,12 @@ function Admin() {
   const fMax = Math.max(s.funnel.visits, s.funnel.starts, s.funnel.completed, 1);
   const dayMax = Math.max(...s.byDay.map((d) => d[1]), 1);
   const roleMax = Math.max(...s.byRole.map((d) => d[1]), 1);
+  const yearMax = Math.max(...s.byYear.map((d) => d[1]), 1);
   const kpis: [string, string | number, string][] = [
     ["Total registrations", s.total, "text-primary"],
     ["Registrations today", s.today, ""],
-    ["Referral-generated", s.referred, ""],
-    ["Referral rate", `${s.referralRate}%`, "text-accent"],
+    ["Total referrals", s.totalReferrals, ""],
+    ["Referral conversion", `${s.referralRate}%`, "text-accent"],
     ["Rewards unlocked", s.rewards, ""],
     ["Goal progress", `${Math.round((s.total / 500) * 100)}%`, "text-primary"],
   ];
@@ -85,7 +86,7 @@ function Admin() {
     <div className="min-h-screen bg-background">
       <header className="border-b border-line/10">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-5">
-          <Link to="/" className="font-display text-sm font-bold">AI·RESUME<span className="text-primary">LAB</span> <span className="font-mono text-[10px] text-muted-foreground">/ admin</span></Link>
+          <Link to="/" className="font-display text-sm font-bold">Nxt<span className="text-primary">Wave</span> <span className="font-mono text-[10px] text-muted-foreground">/ admin</span></Link>
           <button onClick={() => load()} className="rounded-md border border-line/15 px-3 py-1.5 font-mono text-xs hover:border-primary/50 hover:text-primary">{loading ? "…" : "↻ Refresh"}</button>
         </div>
       </header>
@@ -144,6 +145,20 @@ function Admin() {
             <div className="space-y-2">
               {s.byRole.length === 0 ? <p className="text-sm text-muted-foreground">No data yet.</p> : s.byRole.map(([r, v]) => <Bar key={r} label={r} value={v} max={roleMax} />)}
             </div>
+          </section>
+          <section className="bento p-5">
+            <div className="eyebrow mb-3">By graduation year</div>
+            <div className="space-y-2">
+              {s.byYear.length === 0 ? <p className="text-sm text-muted-foreground">No data yet.</p> : s.byYear.map(([y, v]) => <Bar key={y} label={y} value={v} max={yearMax} tone="bg-accent" />)}
+            </div>
+          </section>
+          <section className="bento p-5">
+            <div className="eyebrow mb-3">Top referral codes</div>
+            {s.topCodes.length === 0 ? <p className="text-sm text-muted-foreground">No referrals yet.</p> : (
+              <ul className="space-y-2 font-mono text-sm">
+                {s.topCodes.map((t) => <li key={t.code} className="flex justify-between border-b border-line/10 pb-2"><span>{t.code}</span><span className="text-primary">{t.count}</span></li>)}
+              </ul>
+            )}
           </section>
         </div>
         <section className="bento overflow-x-auto p-5">

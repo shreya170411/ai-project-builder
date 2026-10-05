@@ -105,7 +105,7 @@ export function Registration() {
     const pct = Math.min(status.count, 2) * 50;
     return (
       <div>
-        <div className="font-display text-2xl font-bold">You're in! 🎉</div>
+        <div className="font-display text-2xl font-bold">You're registered.</div>
         <p className="mt-1 text-sm text-muted-foreground">
           {status.firstName}, your seat for Sat 17 Oct · 6:00 PM IST is saved (simulated). The workshop stays free regardless of referrals.
         </p>
@@ -113,8 +113,9 @@ export function Registration() {
           <StarterPack />
         ) : (
           <div className="mt-4 rounded-xl border border-dashed border-line/15 p-4">
-            <div className="font-display font-semibold">Want the AI Project Starter Pack?</div>
-            <p className="text-sm text-muted-foreground">Invite 2 friends to register and unlock additional project resources.</p>
+            <div className="font-display font-semibold">Want to unlock the proposed Project Starter Pack?</div>
+            <p className="text-sm text-muted-foreground">Invite 2 friends using your unique referral link.</p>
+            <p className="mt-1 font-mono text-[10px] uppercase tracking-wider text-accent">Proposed campaign incentive</p>
           </div>
         )}
         <div className="mt-4 rounded-xl border border-line/10 bg-background/50 p-4">
@@ -124,11 +125,17 @@ export function Registration() {
           </div>
           <div className="mt-3 flex items-center justify-between text-sm">
             <span className="text-muted-foreground">Progress</span>
-            <span className="font-mono">{Math.min(status.count, 2)} / 2 referrals{status.count > 2 ? ` (+${status.count - 2})` : ""}</span>
+            <span className="font-mono">{Math.min(status.count, 2)} / 2 referrals{status.count >= 2 ? " ✓" : ""}{status.count > 2 ? ` (+${status.count - 2})` : ""}</span>
           </div>
           <div className="mt-2 h-2 overflow-hidden rounded-full bg-line/10">
             <div className="h-full rounded-full bg-primary transition-all duration-700" style={{ width: `${pct}%` }} />
           </div>
+          <ol className="mt-4 grid grid-cols-5 gap-1 text-center font-mono text-[9px] uppercase leading-tight text-muted-foreground">
+            {["Register", "Get link", "Share", "2 friends join", "Pack unlocked"].map((l, i) => {
+              const done = i < 2 || (i === 2 && status.count > 0) || (i === 3 && status.count >= 2) || (i === 4 && status.unlocked);
+              return <li key={l} className={`rounded-md border px-1 py-1.5 ${done ? "border-primary/40 bg-primary/10 text-primary" : "border-line/10"}`}>{l}</li>;
+            })}
+          </ol>
           <div className="mt-4 truncate rounded-md border border-line/15 bg-background/60 px-2.5 py-2 font-mono text-[11px] text-muted-foreground">{link}</div>
           <div className="mt-3 grid gap-2 sm:grid-cols-2">
             <a
