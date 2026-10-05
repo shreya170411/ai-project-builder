@@ -3,9 +3,9 @@ import { z } from "zod";
 
 export const ROLES = [
   "Data Analyst",
-  "Software Engineer",
+  "Software Developer",
+  "QA Engineer",
   "AI / ML Engineer",
-  "Full-Stack Developer",
   "Product Analyst",
   "Other",
 ] as const;
@@ -96,7 +96,7 @@ export const getAdminStats = createServerFn({ method: "POST" })
     if (data.passcode !== expected) return { ok: false as const };
     const db = await admin();
     const [{ data: regs }, { data: events }] = await Promise.all([
-      db.from("registrations").select("name, college, target_role, referral_code, referred_by, referral_count, reward_unlocked, created_at").order("created_at", { ascending: false }).limit(5000),
+      db.from("registrations").select("name, college, target_role, graduation_year, referral_code, referred_by, referral_count, reward_unlocked, created_at").order("created_at", { ascending: false }).limit(5000),
       db.from("events").select("name, session_id").limit(20000),
     ]);
     const r = regs ?? [];
@@ -105,10 +105,13 @@ export const getAdminStats = createServerFn({ method: "POST" })
     const byDay: Record<string, number> = {};
     for (let i = 6; i >= 0; i--) byDay[new Date(Date.now() - i * 864e5).toISOString().slice(0, 10)] = 0;
     const byRole: Record<string, number> = {};
+    const byYear: Record<string, number> = {};
     for (const x of r) {
       const d = x.created_at.slice(0, 10);
       if (d in byDay) byDay[d] = (byDay[d] ?? 0) + 1;
       byRole[x.target_role] = (byRole[x.target_role] ?? 0) + 1;
+      const y = String(x.graduation_year);
+      byYear[y] = (byYear[y] ?? 0) + 1;
     }
     const uniq = (n: string) => new Set(e.filter((x) => x.name === n).map((x) => x.session_id || Math.random())).size;
     const referred = r.filter((x) => x.referred_by).length;
@@ -122,6 +125,9 @@ export const getAdminStats = createServerFn({ method: "POST" })
       top: r.filter((x) => x.referral_count > 0).sort((a, b) => b.referral_count - a.referral_count).slice(0, 5).map((x) => ({ name: x.name, college: x.college, count: x.referral_count, unlocked: x.reward_unlocked })),
       byDay: Object.entries(byDay),
       byRole: Object.entries(byRole).sort((a, b) => b[1] - a[1]),
+      byYear: Object.entries(byYear).sort((a, b) => a[0].localeCompare(b[0])),
+      totalReferrals: r.reduce((a, x) => a + x.referral_count, 0),
+      topCodes: r.filter((x) => x.referral_count > 0).sort((a, b) => b.referral_count - a.referral_count).slice(0, 5).map((x) => ({ code: x.referral_code, count: x.referral_count })),
       funnel: {
         visits: uniq("landing_view"),
         starts: uniq("registration_started"),
