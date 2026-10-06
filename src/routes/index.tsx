@@ -146,7 +146,7 @@ function Analyzer({ large = false }: { large?: boolean }) {
       <div className={`grid gap-4 p-4 ${large ? "md:grid-cols-5 md:p-6" : ""}`}>
         <div className={`space-y-3 ${large ? "md:col-span-2" : ""}`}>
           <div className="flex items-center gap-2 rounded-lg border border-dashed border-primary/40 bg-primary/5 px-3 py-2.5 text-sm">
-            <FileText className="size-4 text-primary" /> <span className="font-mono text-xs">shreya_resume.pdf</span>
+            <FileText className="size-4 text-primary" /> <span className="font-mono text-xs">candidate_resume.pdf</span>
           </div>
           <div>
             <div className="mb-1.5 font-mono text-[10px] uppercase text-muted-foreground">Target role</div>
