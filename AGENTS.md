@@ -8,3 +8,5 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- No browser Supabase auth attacher in src/start.ts: the app has no user sign-in and server fns use server-side credentials, so the browser client must never be required.
